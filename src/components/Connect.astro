@@ -1,0 +1,52 @@
+---
+import { site } from '../data/site.js';
+
+const links = [
+  { href: site.links.email, label: 'Email' },
+  { href: site.links.linkedin, label: 'LinkedIn' },
+  { href: site.links.instagram, label: 'Instagram' },
+  { href: site.links.resume, label: 'Résumé (PDF)' },
+];
+---
+
+<section id="connect" class="connect">
+  <h2>Let's connect</h2>
+  <p>Recruiting, a project, or a Saturday run — I'd like to hear from you.</p>
+  <ul>
+    {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+  </ul>
+</section>
+
+<style>
+  .connect {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 36px;
+    border-top: 1px solid var(--ink);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+  }
+
+  p {
+    color: var(--muted);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-weight: 500;
+  }
+
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+</style>

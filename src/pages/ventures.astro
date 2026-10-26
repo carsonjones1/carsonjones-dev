@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import timeline from '../data/timeline.json';
+
+const ventures = timeline.filter((entry) => entry.kind === 'venture');
+---
+
+<Base title="Ventures" description="The businesses and communities Carson Jones has started or helped run.">
+  <div class="column page">
+    <section class="intro">
+      <h1>Ventures &amp; leadership</h1>
+      <p>Businesses I started, a community I lead, and the family practice I help run.</p>
+    </section>
+
+    <ul class="ventures">
+      {
+        ventures.map((entry) => (
+          <li>
+            <span class="eyebrow">{entry.label}</span>
+            <h2>{entry.title}</h2>
+            <p>{entry.summary}</p>
+            <a href={`/timeline/#${entry.id}`}>The story →</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 40px 0 24px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 2.5rem);
+  }
+
+  .intro p,
+  li p {
+    color: var(--muted);
+  }
+
+  .ventures {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h2 {
+    font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  }
+
+  li a {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 720px) {
+    .page {
+      padding-top: 64px;
+    }
+  }
+</style>

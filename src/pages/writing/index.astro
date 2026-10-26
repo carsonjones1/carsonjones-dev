@@ -1,0 +1,121 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('writing', (post) => !post.data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const tags = ['Devotional', 'Reflection', 'Building'];
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base title="Writing" description="Devotionals, reflections and notes on building, by Carson Jones.">
+  <div class="column page">
+    <section class="intro">
+      <h1>Writing</h1>
+      <p>Devotionals, reflections, and notes on what I'm building.</p>
+    </section>
+
+    <div class="filters" data-filter-group="post-list" role="group" aria-label="Filter by tag">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      {
+        tags.map((tag) => (
+          <button type="button" data-filter={tag} aria-pressed="false">
+            {tag}
+          </button>
+        ))
+      }
+    </div>
+
+    {posts.length === 0 && <p class="empty">Nothing published yet.</p>}
+
+    <ul id="post-list" class="posts">
+      {
+        posts.map((post) => (
+          <li data-kind={post.data.tag}>
+            <a href={`/writing/${post.id}/`}>
+              <span class="eyebrow">
+                {post.data.tag} · {formatDate(post.data.date)}
+              </span>
+              <span class="title">{post.data.title}</span>
+              <span class="summary">{post.data.summary}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<script>
+  import { setupFilters } from '../../scripts/filter.js';
+
+  setupFilters();
+</script>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 0 24px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 2.5rem);
+  }
+
+  .intro p,
+  .empty {
+    color: var(--muted);
+  }
+
+  .posts {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .posts a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--ink);
+  }
+
+  .posts a:hover {
+    text-decoration: none;
+  }
+
+  .posts a:hover .title {
+    color: var(--accent);
+  }
+
+  .title {
+    font-family: var(--serif);
+    font-size: clamp(1.1875rem, 1rem + 0.8vw, 1.4375rem);
+    line-height: 1.35;
+  }
+
+  .summary {
+    color: var(--muted);
+  }
+
+  @media (min-width: 720px) {
+    .page {
+      padding-top: 64px;
+    }
+  }
+</style>

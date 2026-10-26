@@ -1,0 +1,127 @@
+---
+// The frame every page shares: fonts, header, navigation and footer.
+// A page wraps its content in <Base title="...">…</Base>.
+import '../styles/global.css';
+import { site } from '../data/site.js';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} — ${site.name}` : site.name;
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: '/timeline/', label: 'Timeline' },
+  { href: '/ventures/', label: 'Ventures' },
+  { href: '/writing/', label: 'Writing' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="wordmark" href="/">{site.name}</a>
+      <nav aria-label="Main">
+        {
+          nav.map((item) => (
+            <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+        <a class="nav-cta" href="/#connect">Let's connect</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer column">
+      © {new Date().getFullYear()} {site.name} · {site.location}
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+    padding: 20px var(--gutter);
+  }
+
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--ink);
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--ink);
+  }
+
+  nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+
+  nav .nav-cta {
+    color: var(--accent);
+  }
+
+  .site-footer {
+    padding: 48px 0 40px;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  @media (min-width: 720px) {
+    .site-header {
+      padding: 32px 64px;
+    }
+
+    .wordmark {
+      font-size: 1.375rem;
+    }
+
+    nav {
+      gap: 32px;
+      font-size: 1.125rem;
+    }
+  }
+</style>

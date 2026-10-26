@@ -1,0 +1,241 @@
+---
+import Base from '../layouts/Base.astro';
+import timeline from '../data/timeline.json';
+---
+
+<Base title="Timeline" description="Everything Carson Jones has built, and what was missing each time.">
+  <div class="column page">
+    <section class="intro">
+      <h1>Everything I've built</h1>
+      <p>Each entry starts with what was missing. Open one to see what I built, and what I'd do differently now.</p>
+    </section>
+
+    <div class="filters" data-filter-group="timeline-list" role="group" aria-label="Filter the timeline">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="venture" aria-pressed="false">Ventures &amp; leadership</button>
+      <button type="button" data-filter="software" aria-pressed="false">Software</button>
+    </div>
+
+    <ol id="timeline-list" class="entries">
+      {
+        timeline.map((entry) => (
+          <li id={entry.id} class:list={['entry', entry.kind]} data-kind={entry.kind}>
+            <details>
+              <summary>
+                <span class="year">{entry.year}</span>
+                <span class="text">
+                  <span class="title">{entry.title}</span>
+                  <span class="summary">{entry.summary}</span>
+                </span>
+                <span class="sign" aria-hidden="true" />
+              </summary>
+              <dl>
+                <div>
+                  <dt>What was missing</dt>
+                  <dd>{entry.missing}</dd>
+                </div>
+                <div>
+                  <dt>What I built</dt>
+                  <dd>{entry.built}</dd>
+                </div>
+                <div>
+                  <dt>What I'd do differently</dt>
+                  <dd>{entry.differently}</dd>
+                </div>
+              </dl>
+            </details>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Base>
+
+<script>
+  import { setupFilters } from '../scripts/filter.js';
+
+  setupFilters();
+
+  // Arriving from a homepage link like /timeline/#feedback-form opens that entry.
+  // (getElementById, because an id like "2024-recap" isn't a valid CSS selector.)
+  const id = decodeURIComponent(location.hash.slice(1));
+  const target = id && document.getElementById(id)?.querySelector('details');
+  if (target) target.open = true;
+</script>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 40px 0 24px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.4rem + 2vw, 2.5rem);
+  }
+
+  .intro p {
+    color: var(--muted);
+  }
+
+  /* The vertical line and a dot for each entry. */
+  .entries {
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 30px;
+    list-style: none;
+  }
+
+  .entries::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: var(--rule-strong);
+  }
+
+  .entry {
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+    scroll-margin-top: 24px;
+  }
+
+  .entry::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 26px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+
+  .entry.software::before {
+    background: var(--accent);
+  }
+
+  summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24px;
+    gap: 4px 16px;
+    padding: 18px 0;
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .year {
+    grid-column: 1 / -1;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--faint);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .title {
+    font-family: var(--serif);
+    font-size: 1.1875rem;
+    line-height: 1.3;
+  }
+
+  summary:hover .title {
+    color: var(--accent);
+  }
+
+  .summary {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .sign::before {
+    content: '+';
+    font-size: 1.625rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  details[open] .sign::before {
+    content: '−';
+  }
+
+  dl {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 0 24px;
+    padding: 20px 22px;
+    border-radius: 6px;
+    background: var(--paper-deep);
+  }
+
+  dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+  }
+
+  @media (min-width: 720px) {
+    .page {
+      padding-top: 64px;
+      gap: 36px;
+    }
+
+    .entries {
+      padding-left: 36px;
+    }
+
+    .entry::before {
+      left: -36px;
+      top: 30px;
+    }
+
+    summary {
+      grid-template-columns: 110px minmax(0, 1fr) 28px;
+      align-items: baseline;
+      gap: 20px;
+      padding: 22px 0;
+    }
+
+    .year {
+      grid-column: auto;
+    }
+
+    .title {
+      font-size: 1.375rem;
+    }
+
+    .summary {
+      font-size: 1.0625rem;
+    }
+
+    dl {
+      margin-left: 130px;
+    }
+  }
+</style>

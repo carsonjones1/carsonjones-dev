@@ -1,0 +1,304 @@
+---
+import Base from '../layouts/Base.astro';
+import Connect from '../components/Connect.astro';
+import timeline from '../data/timeline.json';
+import { site } from '../data/site.js';
+import { getCollection } from 'astro:content';
+
+// Counts come from the timeline data, so they stay right as you add entries.
+const ventures = timeline.filter((entry) => entry.kind === 'venture').length;
+const builds = timeline.filter((entry) => entry.kind === 'software').length;
+const featured = timeline.filter((entry) => entry.featured);
+
+const posts = (await getCollection('writing', (post) => !post.data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const venturesInWords = words[ventures] ?? String(ventures);
+
+const lede =
+  `I'm a finance and supply chain student at the University of South Carolina. ` +
+  `I've started ${venturesInWords} ventures — among them a faith-based run club in Columbia — ` +
+  `and I'm teaching myself to build software. This site is where I keep track of all of it.`;
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Base>
+  <div class="column page">
+    <section class="intro">
+      <h1>I notice what's missing, and build it.</h1>
+      <p class="lede">{lede}</p>
+      <p class="facts">
+        <span>{ventures} ventures</span><span aria-hidden="true">/</span><span>{builds} software builds</span><span
+          aria-hidden="true">/</span
+        ><span>{site.location}</span>
+      </p>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Things I've built</h2>
+        <a href="/timeline/">Full timeline →</a>
+      </div>
+
+      <div class="strip" aria-hidden="true">
+        <div class="strip-dots">
+          {timeline.map((entry) => <span class:list={['dot', entry.kind]} title={entry.title} />)}
+          <span class="dot next" title="What's next" />
+        </div>
+        <div class="strip-legend">
+          <span><span class="key venture"></span>Ventures &amp; leadership</span>
+          <span><span class="key software"></span>Software</span>
+        </div>
+      </div>
+
+      <ul class="rows">
+        {
+          featured.map((entry) => (
+            <li>
+              <a href={`/timeline/#${entry.id}`}>
+                <span class="row-text">
+                  <span class="row-title">{entry.title}</span>
+                  <span class="row-summary">{entry.summary}</span>
+                </span>
+                <span class:list={['eyebrow', { 'is-software': entry.kind === 'software' }]}>{entry.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Latest writing</h2>
+        <a href="/writing/">All writing →</a>
+      </div>
+      {posts.length === 0 && <p class="empty">Nothing published yet.</p>}
+      <ul class="posts">
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`/writing/${post.id}/`}>
+                <span class="eyebrow">
+                  {post.data.tag} · {formatDate(post.data.date)}
+                </span>
+                <span class="post-title">{post.data.title}</span>
+                <span class="post-summary">{post.data.summary}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <Connect />
+  </div>
+</Base>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    padding: 40px 0 24px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 1.3rem + 2.4vw, 2.75rem);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .facts [aria-hidden] {
+    color: var(--rule-strong);
+  }
+
+  /* The thin timeline preview: one dot per entry. */
+  .strip {
+    margin-bottom: 8px;
+  }
+
+  .strip-dots {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+
+  .strip-dots::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--rule-strong);
+  }
+
+  .dot {
+    position: relative;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+  }
+
+  .dot.venture,
+  .key.venture {
+    background: var(--ink);
+  }
+
+  .dot.software,
+  .key.software {
+    background: var(--accent);
+  }
+
+  .dot.next {
+    border: 2px solid var(--accent);
+    background: var(--paper);
+  }
+
+  .strip-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: var(--faint);
+  }
+
+  .strip-legend > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .key {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .rows,
+  .posts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rows li {
+    border-top: 1px solid var(--rule);
+  }
+
+  .rows li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .rows a {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+    padding: 18px 0;
+    color: var(--ink);
+  }
+
+  .rows a:hover {
+    text-decoration: none;
+  }
+
+  .rows a:hover .row-title {
+    color: var(--accent);
+  }
+
+  .row-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .row-title,
+  .post-title {
+    font-family: var(--serif);
+    font-size: 1.1875rem;
+    line-height: 1.35;
+  }
+
+  .row-summary,
+  .post-summary {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .posts {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .posts a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--ink);
+  }
+
+  .posts a:hover {
+    text-decoration: none;
+  }
+
+  .posts a:hover .post-title {
+    color: var(--accent);
+  }
+
+  .empty {
+    color: var(--muted);
+  }
+
+  @media (min-width: 720px) {
+    .page {
+      gap: 88px;
+      padding-top: 72px;
+    }
+
+    .rows a {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding: 22px 0;
+    }
+
+    .row-title,
+    .post-title {
+      font-size: 1.375rem;
+    }
+
+    .row-summary,
+    .post-summary {
+      font-size: 1.125rem;
+    }
+  }
+</style>

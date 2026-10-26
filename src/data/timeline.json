@@ -1,0 +1,110 @@
+[
+  {
+    "id": "sneakers",
+    "kind": "venture",
+    "label": "Venture",
+    "title": "Sneaker reselling",
+    "summary": "A sneaker reselling business.",
+    "year": "[YEAR]",
+    "featured": false,
+    "missing": "[What was missing?]",
+    "built": "[What did you build, and how did it work?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "detailing",
+    "kind": "venture",
+    "label": "Venture",
+    "title": "Mobile car detailing",
+    "summary": "A mobile car detailing business.",
+    "year": "[YEAR]",
+    "featured": false,
+    "missing": "[What was missing?]",
+    "built": "[What did you build, and how did it work?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "run-with-christ",
+    "kind": "venture",
+    "label": "Leadership",
+    "title": "Run With Christ Columbia",
+    "summary": "A faith-based run club I founded in Columbia.",
+    "year": "[YEAR]",
+    "featured": true,
+    "missing": "[What was missing?]",
+    "built": "[What did you build, and how does it run?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "bridge-street",
+    "kind": "venture",
+    "label": "Operations",
+    "title": "Bridge Street Health",
+    "summary": "Operations and finance for a direct primary care practice.",
+    "year": "[YEAR]",
+    "featured": true,
+    "missing": "[What was missing?]",
+    "built": "[What do you own day to day?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "apps-scripts",
+    "kind": "software",
+    "label": "Software",
+    "title": "Google Apps Scripts",
+    "summary": "Automations that grew more sophisticated each time.",
+    "year": "[YEAR]",
+    "featured": false,
+    "missing": "[What was missing?]",
+    "built": "[What do they automate?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "first-website",
+    "kind": "software",
+    "label": "Software",
+    "title": "First website",
+    "summary": "A site written by hand in HTML.",
+    "year": "[YEAR]",
+    "featured": false,
+    "missing": "[What was missing?]",
+    "built": "[What was it for?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "feedback-form",
+    "kind": "software",
+    "label": "Software",
+    "title": "Feedback form",
+    "summary": "A Supabase backend on free hosting.",
+    "year": "[YEAR]",
+    "featured": true,
+    "missing": "[What was missing?]",
+    "built": "A form whose responses land in a Supabase database. [What does it collect, and who reads it?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "capstone",
+    "kind": "software",
+    "label": "Software",
+    "title": "Capstone portfolio project",
+    "summary": "Built for a capstone program application.",
+    "year": "[YEAR]",
+    "featured": false,
+    "missing": "[What was missing?]",
+    "built": "[What does it do?]",
+    "differently": "[What would you do differently now?]"
+  },
+  {
+    "id": "this-site",
+    "kind": "software",
+    "label": "Software",
+    "title": "This website",
+    "summary": "Designed and built while learning to code.",
+    "year": "[YEAR]",
+    "featured": true,
+    "missing": "[What was missing?]",
+    "built": "Built with Astro, with content kept in Notion and synced by a Python script. [What else did you learn?]",
+    "differently": "[What would you do differently now?]"
+  }
+]

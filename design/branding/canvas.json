@@ -1,0 +1,25 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Round 1 — concepts" },
+    { "id": "page-2", "name": "Round 2 — Mario homage" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A — the ledger", "x": 0, "y": 0, "w": 720, "h": 1240, "page": "page-1" },
+    { "file": "TheGap.dc.html", "title": "B — the gap", "x": 800, "y": 0, "w": 720, "h": 1240, "page": "page-1" },
+    { "file": "Signal.dc.html", "title": "C — signal", "x": 1600, "y": 0, "w": 720, "h": 1240, "page": "page-1" },
+    { "file": "Columbia.dc.html", "title": "D — Columbia", "x": 2400, "y": 0, "w": 720, "h": 1240, "page": "page-1" },
+    { "file": "Index.dc.html", "title": "E — the index", "x": 3200, "y": 0, "w": 720, "h": 1240, "page": "page-1" },
+    { "file": "Level.dc.html", "title": "F — level 1-1", "x": 0, "y": 0, "w": 720, "h": 1240, "page": "page-2" },
+    { "file": "Primaries.dc.html", "title": "G — primaries", "x": 800, "y": 0, "w": 720, "h": 1240, "page": "page-2" },
+    { "file": "Overworld.dc.html", "title": "H — overworld", "x": 1600, "y": 0, "w": 720, "h": 1240, "page": "page-2" },
+    { "file": "Manual.dc.html", "title": "I — the manual", "x": 2400, "y": 0, "w": 720, "h": 1240, "page": "page-2" }
+  ],
+  "annotations": [
+    { "id": "thesis", "x": 0, "y": -150, "w": 720, "page": "page-1", "text": "Brand thesis: notices gaps and closes them.\n\nFive concepts, not five colour schemes. Each hero is structured differently on purpose — a ledger table, a gap motif, a network diagram, a photograph, a tagged archive." },
+    { "id": "placeholders", "x": 2400, "y": -150, "w": 720, "page": "page-1", "text": "Bracketed labels mark where your real photographs and screenshots go. The one-line 'gap' descriptions in A and B are my guesses, not facts — those need your words." },
+    { "id": "round2-intro", "x": 0, "y": -170, "w": 720, "page": "page-2", "text": "Round 2 — four ways to honour Super Mario, ordered from most literal (F) to least (G, then H and I, which carry it in structure rather than pixels).\n\nSame thesis underneath: notices gaps and closes them." },
+    { "id": "ip-line", "x": 800, "y": -170, "w": 720, "page": "page-2", "text": "The homage uses colour, generic pixel type, and game ideas — levels, a score bar, a world map, a manual. No characters, logos, sprites or ? blocks: this site goes on job applications, and Nintendo is famously protective of its artwork." },
+    { "id": "order", "x": 1600, "y": -170, "w": 720, "page": "page-2", "text": "The order on the staircase (F) and the map path (H) is my guess. The real chronology comes from you." }
+  ],
+  "launch": { "view": "canvas", "page": "page-2" }
+}

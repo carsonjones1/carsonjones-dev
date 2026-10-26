@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.env
+__pycache__/
+.venv/
+
+# Generated copy of the design canvas (2 MB); the .dc.html files beside it are the source.
+design/branding/carson-jones-branding-directions.html
