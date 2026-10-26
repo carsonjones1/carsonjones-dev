@@ -67,6 +67,5 @@ He has limited coding experience and is using this project to **learn**, includi
 
 1. Carson fills in the placeholders in Notion: years, real order, what was missing, what he built, what he'd do differently. Then he writes a first real post and deletes the example post.
 2. Add the real Instagram handle and `public/resume.pdf`.
-3. Put the site online: free static hosting (e.g. Netlify or Vercel) and a domain based on his name. Plan for rebuilds after Notion edits (scheduled or a rebuild button); the build machine needs Python plus the token as an environment variable.
+3. ~~Put the site online~~ Done: GitHub Pages at https://carsonjones1.github.io, from the public repo `carsonjones1/carsonjones1.github.io`. `.github/workflows/deploy.yml` rebuilds on every push to `main`. The Notion sync runs locally and its output is committed, so the build needs no Python or token. Optional later: a custom domain based on his name.
 4. Give each venture its own page with photos (Run With Christ first).
-5. Optional: start using git. The project isn't a repository yet.

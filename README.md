@@ -10,6 +10,20 @@ npm run dev     # live preview at http://localhost:4321, refreshes as you save
 npm run build   # makes the finished site in dist/
 ```
 
+## Publishing
+
+The site lives at **https://carsonjones1.github.io**. Every push to `main` rebuilds and
+republishes it automatically (see `.github/workflows/deploy.yml`):
+
+```bash
+py sync_notion.py              # if you changed anything in Notion
+git add -A
+git commit -m "Describe what changed"
+git push
+```
+
+Progress shows under the **Actions** tab of the GitHub repository; it takes a minute or two.
+
 ## Where things live
 
 | To change… | Edit |

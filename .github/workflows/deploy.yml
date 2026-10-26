@@ -1,0 +1,44 @@
+# Builds the site and publishes it to GitHub Pages every time you push to main.
+# Content from Notion is already saved in the repository (run `py sync_notion.py`
+# and commit before pushing), so this needs no Python and no Notion token.
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # adds a "Run workflow" button on GitHub, to redeploy by hand
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If you push twice quickly, finish one deploy before starting the next.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

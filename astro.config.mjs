@@ -1,4 +1,6 @@
 import { defineConfig } from 'astro/config';
 
-// Astro's settings. When the site has a real domain, add it here as `site`.
-export default defineConfig({});
+// Astro's settings. `site` is the site's public address; change it if you add your own domain.
+export default defineConfig({
+  site: 'https://carsonjones1.github.io',
+});
