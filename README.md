@@ -12,7 +12,7 @@ npm run build   # makes the finished site in dist/
 
 ## Publishing
 
-The site lives at **https://carsonjones1.github.io**. Every push to `main` rebuilds and
+The site lives at **https://carsonjones.dev** (repository `carsonjones1/carsonjones-dev`). Every push to `main` rebuilds and
 republishes it automatically (see `.github/workflows/deploy.yml`):
 
 ```bash
