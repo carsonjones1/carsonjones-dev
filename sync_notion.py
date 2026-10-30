@@ -246,6 +246,7 @@ def sync_timeline():
                 "label": select(row, "Label"),
                 "title": title,
                 "summary": text(row, "Summary"),
+                "month": select(row, "Month"),
                 "year": text(row, "Year"),
                 "featured": checkbox(row, "Featured"),
                 "missing": text(row, "What was missing"),

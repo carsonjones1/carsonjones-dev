@@ -49,7 +49,7 @@ He has limited coding experience and is using this project to **learn**, includi
 ## Notion setup
 
 - Private page **"Personal Portfolio — Site Content"**: https://app.notion.com/p/3faed26f6bd081c89b44cdbeffa5dcdc
-  - **Timeline** data source `308ad9c7-6c69-447a-ba4f-59551a512a36`: Title, Order, Kind (Venture/Software), Label, Year, Summary, What was missing, What I built, What I'd do differently, Featured, Slug.
+  - **Timeline** data source `308ad9c7-6c69-447a-ba4f-59551a512a36`: Title, Order, Kind (Venture/Software), Label, Month, Year, Summary, What was missing, What I built, What I'd do differently, Featured, Slug.
   - **Writing** data source `bc8a4ae3-799a-4c2b-bea5-99317e34bc60`: Title, Date, Tag, Summary, Draft, Slug. The post itself is the page body.
 - The integration **"Personal Website Connection"** has access. Notion API version `2026-03-11`, using `POST /v1/data_sources/{id}/query` and `GET /v1/blocks/{id}/children`.
 - The sync clears and rewrites `src/content/writing/` and `public/images/writing/` on each run, and downloads post images because Notion's image links expire.

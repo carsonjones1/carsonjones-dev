@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import timeline from '../data/timeline.json';
+
+// "September" + "2024" -> "Sep 2024". Either part can be blank in Notion.
+const when = (entry: { month?: string; year?: string }) =>
+  [entry.month?.slice(0, 3), entry.year].filter(Boolean).join(' ');
 ---
 
 <Base title="Timeline" description="Everything Carson Jones has built, and what was missing each time.">
@@ -22,7 +26,7 @@ import timeline from '../data/timeline.json';
           <li id={entry.id} class:list={['entry', entry.kind]} data-kind={entry.kind}>
             <details>
               <summary>
-                <span class="year">{entry.year}</span>
+                <span class="year">{when(entry)}</span>
                 <span class="text">
                   <span class="title">{entry.title}</span>
                   <span class="summary">{entry.summary}</span>
