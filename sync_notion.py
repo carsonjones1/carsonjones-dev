@@ -30,6 +30,7 @@ load_dotenv()
 TOKEN = os.environ.get("NOTION_TOKEN")
 TIMELINE_ID = os.environ.get("NOTION_TIMELINE_ID")
 WRITING_ID = os.environ.get("NOTION_WRITING_ID")
+PROJECTS_ID = os.environ.get("NOTION_PROJECTS_DS")
 
 API = "https://api.notion.com/v1"
 HEADERS = {
@@ -42,6 +43,8 @@ ROOT = Path(__file__).parent
 TIMELINE_FILE = ROOT / "src" / "data" / "timeline.json"
 WRITING_DIR = ROOT / "src" / "content" / "writing"
 IMAGES_DIR = ROOT / "public" / "images" / "writing"
+PROJECTS_FILE = ROOT / "src" / "data" / "projects.json"
+PROJECTS_IMAGES_DIR = ROOT / "public" / "images" / "projects"
 
 
 # --- Talking to Notion --------------------------------------------------------
@@ -112,6 +115,27 @@ def checkbox(row, name):
 def date(row, name):
     value = row["properties"][name]["date"]
     return value["start"] if value else None
+
+
+def number(row, name):
+    """Notion number column."""
+    return row["properties"][name]["number"]
+
+
+def multi_select(row, name):
+    """Notion multi-select returns a list of selected option names."""
+    return [option["name"] for option in row["properties"][name]["multi_select"]]
+
+
+def url(row, name):
+    """Notion URL column."""
+    return row["properties"][name]["url"]
+
+
+def files(row, name):
+    """Notion files column returns a list of file URLs."""
+    file_list = row["properties"][name]["files"]
+    return [f[f["type"]]["url"] for f in file_list]
 
 
 def slugify(title):
@@ -310,6 +334,65 @@ def sync_writing():
     print(f"Writing: {len(posts)} posts, {len(downloads)} images -> {WRITING_DIR.relative_to(ROOT)}")
 
 
+def sync_projects():
+    """Pull project data from the Notion Projects database."""
+    if not PROJECTS_ID:
+        print("Projects: Skipping (NOTION_PROJECTS_DS not set in .env)")
+        return
+
+    rows = query_all(PROJECTS_ID, sorts=[{"property": "Order", "direction": "ascending"}])
+    projects = []
+    downloads = []  # (url, path)
+
+    for row in rows:
+        title = text(row, "Title")
+        if not title or not checkbox(row, "Published"):
+            continue
+
+        slug = slugify(text(row, "Slug") or title)
+        if any(slug == taken["slug"] for taken in projects):
+            sys.exit(f'Two projects would both have slug "{slug}". Give one a different Slug in Notion.')
+
+        # Download screenshot if present
+        screenshot_files = files(row, "Screenshot")
+        screenshot = None
+        if screenshot_files:
+            screenshot_url = screenshot_files[0]
+            extension = Path(urlparse(screenshot_url).path).suffix or ".jpg"
+            filename = f"{slug}{extension}"
+            screenshot = f"/images/projects/{filename}"
+            downloads.append((screenshot_url, PROJECTS_IMAGES_DIR / filename))
+
+        projects.append(
+            {
+                "slug": slug,
+                "title": title,
+                "summary": text(row, "Summary"),
+                "tools": multi_select(row, "Tools"),
+                "role": text(row, "Role"),
+                "liveUrl": url(row, "Live URL"),
+                "githubUrl": url(row, "GitHub URL"),
+                "screenshot": screenshot,
+                "featured": checkbox(row, "Featured"),
+                "order": number(row, "Order") or 0,
+            }
+        )
+
+    # Download screenshots
+    if downloads:
+        shutil.rmtree(PROJECTS_IMAGES_DIR, ignore_errors=True)
+        PROJECTS_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+
+        for url, path in downloads:
+            response = requests.get(url, timeout=60)
+            if not response.ok:
+                sys.exit(f"Couldn't download screenshot for {path.stem} ({response.status_code}).")
+            path.write_bytes(response.content)
+
+    PROJECTS_FILE.write_text(json.dumps(projects, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Projects: {len(projects)} entries, {len(downloads)} screenshots -> {PROJECTS_FILE.relative_to(ROOT)}")
+
+
 if __name__ == "__main__":
     missing = [name for name in ("NOTION_TOKEN", "NOTION_TIMELINE_ID", "NOTION_WRITING_ID") if not os.environ.get(name)]
     if missing:
@@ -317,4 +400,5 @@ if __name__ == "__main__":
 
     sync_timeline()
     sync_writing()
+    sync_projects()
     print("Done. Run `npm run dev` to see the changes.")

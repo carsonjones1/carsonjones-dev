@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "sample-project-1",
+    "title": "Sample Project One",
+    "summary": "This is a placeholder project. Real projects will be synced from Notion.",
+    "tools": ["Sample Tool", "Another Tool"],
+    "role": "Sample role",
+    "liveUrl": null,
+    "githubUrl": null,
+    "screenshot": null,
+    "featured": true,
+    "order": 1
+  },
+  {
+    "slug": "sample-project-2",
+    "title": "Sample Project Two",
+    "summary": "This is another placeholder project.",
+    "tools": ["Tool One", "Tool Two", "Tool Three"],
+    "role": "Sample role",
+    "liveUrl": null,
+    "githubUrl": null,
+    "screenshot": null,
+    "featured": false,
+    "order": 2
+  },
+  {
+    "slug": "sample-project-3",
+    "title": "Sample Project Three",
+    "summary": "Yet another placeholder project.",
+    "tools": ["Sample Tool"],
+    "role": "",
+    "liveUrl": null,
+    "githubUrl": null,
+    "screenshot": null,
+    "featured": false,
+    "order": 3
+  }
+]

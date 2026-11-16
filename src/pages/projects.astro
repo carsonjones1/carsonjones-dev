@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import projects from '../data/projects.json';
+
+const featuredProjects = projects.filter((p) => p.featured);
+const regularProjects = projects.filter((p) => !p.featured);
+const allProjects = [...featuredProjects, ...regularProjects];
+
+const description = "Software and technology work, from a first handwritten HTML site to the site you're looking at.";
+---
+
+<Base title="Projects" description={description}>
+  <div class="wide">
+    <section class="intro">
+      <h1>Projects</h1>
+      <p class="lede">{description}</p>
+    </section>
+
+    <section class="projects">
+      {
+        allProjects.map((project, index) => {
+          const isFeatured = project.featured;
+          const tools = project.tools.join(' · ');
+          const role = project.role ? `${project.role} · ` : '';
+          const meta = role + tools;
+
+          return (
+            <article class:list={['project-card', { featured: isFeatured }]}>
+              {project.screenshot ? (
+                <img src={project.screenshot} alt={`${project.title} screenshot`} class="screenshot" />
+              ) : (
+                <div class="shot" aria-hidden="true">
+                  <span>Screenshot</span>
+                </div>
+              )}
+              <div class="body">
+                <p class="eyebrow is-software">Software</p>
+                <h2>{project.title}</h2>
+                <p class="summary">{project.summary}</p>
+                {meta && <p class="meta">{meta}</p>}
+                {(project.liveUrl || project.githubUrl) && (
+                  <p class="links">
+                    {project.liveUrl && <a href={project.liveUrl}>Live site</a>}
+                    {project.githubUrl && <a href={project.githubUrl}>GitHub</a>}
+                  </p>
+                )}
+              </div>
+            </article>
+          );
+        })
+      }
+    </section>
+  </div>
+</Base>
+
+<style>
+  .wide {
+    max-width: var(--wide);
+  }
+
+  .intro {
+    padding-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: var(--column);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem);
+    letter-spacing: -0.02em;
+  }
+
+  .lede {
+    color: var(--muted);
+    max-width: 36em;
+  }
+
+  .projects {
+    margin-top: 48px;
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .project-card.featured {
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+
+  .screenshot,
+  .shot {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  h2 {
+    font-size: 1.375rem;
+    color: var(--ink);
+  }
+
+  .summary {
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .meta {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-weight: 500;
+  }
+
+  @media (min-width: 720px) {
+    .intro {
+      padding-top: 64px;
+    }
+
+    .projects {
+      margin-top: 64px;
+      gap: 48px;
+    }
+
+    .project-card.featured {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding-bottom: 48px;
+      margin-bottom: 0;
+    }
+
+    .project-card:not(.featured) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .project-card.featured h2 {
+      font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .projects {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .project-card:not(.featured) {
+      grid-column: 1;
+    }
+  }
+</style>
