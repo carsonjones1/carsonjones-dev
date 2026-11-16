@@ -15,16 +15,15 @@ He has limited coding experience and is using this project to **learn**, includi
 ## Decisions already made
 
 - **Brand thesis:** "I notice what's missing, and build it." Every venture and build started from a gap he noticed.
-- **Structure:** one clean homepage that previews every section, not a fork into "recruiters here / friends there". Sections: **Timeline, Ventures, Writing, Let's connect** (connect is a section on the homepage).
+- **Structure:** one clean homepage that previews every section, not a fork into "recruiters here / friends there". Sections: **Projects, Timeline, Ventures, Writing, Let's connect** (connect is a section on the homepage).
 - **Content:**
   - 4 ventures: Run With Christ Columbia (faith-based run club he founded; his favourite thing; keep it prominent), Bridge Street Health (his parents' direct primary care practice; he does operations and finance), a mobile car detailing business, and a sneaker reselling business.
   - 5 software builds: Google Apps Scripts, a first HTML website, a Supabase feedback form, a capstone-program portfolio project, and this site.
   - Each timeline entry answers **what was missing / what I built / what I'd do differently**.
   - A blog with tags: **Devotional, Reflection, Building**.
   - Imagery: mostly screenshots and environmental photos; one simple portrait at most.
-- **Design direction: "Warm editorial"**, inspired by the layout of rebelytics.com but not copied from it. Warm off-white paper (`#faf6f0`), Libre Baskerville serif headings at regular weight, Source Sans 3 body text, one narrow column (760px), and garnet links (`#7d2a26`) as a quiet nod to USC.
+- **Design direction: "Refined editorial"**, evolved from the "Warm editorial" concept. Warm off-white paper (`#faf6f0`), Libre Baskerville serif headings at regular weight, Source Sans 3 body text, a narrow reading column (760px) plus a wider container (1120px) for featured content, and garnet links (`#7d2a26`) as a quiet nod to USC. The homepage now has a hero area with an accent rule, and projects are displayed in cards with screenshot placeholders.
   - Rejected earlier: Round 1 concepts, a Mario homage, and Lego themes. His rule: **professionalism beats any theme.**
-  - Mockups (Round 5) are on the design canvas: https://claude.ai/artifact/ETUpymLMHC5A2ftgWJCRQz
 
 ## What's built
 
@@ -32,27 +31,29 @@ He has limited coding experience and is using this project to **learn**, includi
 
 | What | Where |
 |---|---|
-| Colours, fonts, column width | `src/styles/global.css` (variables at the top) |
+| Colours, fonts, column widths | `src/styles/global.css` (variables at the top) |
 | Header, nav, footer | `src/layouts/Base.astro` |
-| Pages | `src/pages/` — `index.astro`, `timeline.astro`, `ventures.astro`, `writing/index.astro`, `writing/[...slug].astro` |
+| Pages | `src/pages/` — `index.astro`, `projects.astro`, `timeline.astro`, `ventures.astro`, `writing/index.astro`, `writing/[...slug].astro` |
 | Contact block | `src/components/Connect.astro` |
 | Filter buttons (timeline + writing) | `src/scripts/filter.js` |
 | Name, links | `src/data/site.js` (Instagram handle still a placeholder; no `public/resume.pdf` yet) |
 | Timeline data | `src/data/timeline.json` — **generated, don't hand-edit** |
+| Projects data | `src/data/projects.json` — **generated (sample included), don't hand-edit after sync setup** |
 | Blog posts | `src/content/writing/*.md` — **generated, don't hand-edit**; schema in `src/content.config.ts` |
 | Notion sync | `sync_notion.py`, `requirements.txt` (requests, python-dotenv) |
 | Secrets | `.env` (Notion token; git-ignored). Template in `.env.example` |
 | How-to | `README.md` |
 
-**Working and checked in the preview:** homepage (counts computed from the data, timeline dot strip, 4 featured entries, latest posts), timeline (9 entries, filter buttons, expandable entries, deep links like `/timeline/#feedback-form`), ventures list, writing list with tag filters, post pages. No horizontal overflow at phone width.
+**Working and checked in the preview:** homepage (hero area with accent rule, selected projects preview, "More" section linking to Timeline/Ventures/Writing), projects page (featured and regular project cards with screenshots or placeholders, responsive grid), timeline (9 entries, filter buttons, expandable entries, deep links like `/timeline/#feedback-form`), ventures list, writing list with tag filters, post pages. No horizontal overflow at phone width.
 
 ## Notion setup
 
 - Private page **"Personal Portfolio — Site Content"**: https://app.notion.com/p/3faed26f6bd081c89b44cdbeffa5dcdc
   - **Timeline** data source `308ad9c7-6c69-447a-ba4f-59551a512a36`: Title, Order, Kind (Venture/Software), Label, Month, Year, Summary, What was missing, What I built, What I'd do differently, Featured, Slug.
   - **Writing** data source `bc8a4ae3-799a-4c2b-bea5-99317e34bc60`: Title, Date, Tag, Summary, Draft, Slug. The post itself is the page body.
+  - **Projects** data source (optional, set `NOTION_PROJECTS_DS` in `.env`): Title (title property), Summary (rich text), Tools (multi-select), Role (rich text), Live URL (url), GitHub URL (url), Screenshot (files), Featured (checkbox), Order (number), Published (checkbox), Slug (rich text).
 - The integration **"Personal Website Connection"** has access. Notion API version `2026-03-11`, using `POST /v1/data_sources/{id}/query` and `GET /v1/blocks/{id}/children`.
-- The sync clears and rewrites `src/content/writing/` and `public/images/writing/` on each run, and downloads post images because Notion's image links expire.
+- The sync clears and rewrites `src/content/writing/` and `public/images/writing/` on each run, and downloads post images because Notion's image links expire. Project screenshots are downloaded to `public/images/projects/`.
 
 **Workflow:** edit in Notion → `py sync_notion.py` → `npm run dev` (preview at localhost:4321) or `npm run build`.
 

@@ -13,11 +13,14 @@
   --rule-strong: #d9cdbf;
   --accent: #7d2a26; /* garnet — a quiet nod to USC */
   --accent-deep: #5c1d1a;
+  --shot: #ddd6cc; /* screenshot placeholder background */
+  --shot-label: #6f6259; /* screenshot placeholder text */
 
   --serif: 'Libre Baskerville', Georgia, 'Times New Roman', serif;
   --sans: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
 
   --column: 760px;
+  --wide: 1120px; /* wider container for featured content */
   --gutter: 22px;
 }
 
@@ -79,6 +82,12 @@ p {
 /* The single reading column every page sits in. */
 .column {
   width: min(var(--column), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+/* Wider container for featured content and projects. */
+.wide {
+  width: min(var(--wide), 100% - 2 * var(--gutter));
   margin-inline: auto;
 }
 
@@ -148,4 +157,22 @@ p {
 .skip-link:focus {
   left: var(--gutter);
   top: 12px;
+}
+
+/* Screenshot placeholder for projects. */
+.shot {
+  background: var(--shot);
+  color: var(--shot-label);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+}
+
+.shot span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
